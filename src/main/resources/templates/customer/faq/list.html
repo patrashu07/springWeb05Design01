@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<ul>
+	<li th:each="dto : ${list}">
+		<dl>
+			<dt class="question" th:text="${dto.question}" onclick="questionClicked(this)">질문정보가 삽입됩니다.</dt>
+			<dd class="answer">[[${dto.answer}]]</dd>
+		</dl>
+	</li>
+	<li th:if="${#lists.isEmpty(list)}" style="text-align: center;">조회 결과가 존재하지 않습니다.</li>
+</ul>
+<!-- 페이징정보 시작 -->
+<div th:if="${!#lists.isEmpty(list)}" class="pagging flex center">
+	<ol class="flex">
+		<li>
+			<a href="javascript:pageClicked(1)">&lt;&lt;</a>
+		</li>
+		<!-- 이전 ne != -->
+		<li th:if="${pi.start ne 1}">
+			<a th:href="|javascript:pageClicked(${pi.start - 1})|">&lt;</a>
+		</li>
+	</ol>
+	<ol class="page-list flex ">
+		<!-- ps~pe 반복-->
+		<li th:each="pageNo :${#numbers.sequence(pi.start , pi.end)}">
+			<a th:href="|javascript:pageClicked(${pageNo})|">[[${pageNo}]]</a>
+		</li>
+	</ol>
+	<ol class="flex">
+		<!-- 다음 -->
+		<li th:if="${pi.end lt pi.pageTotal}">
+			<a th:href="|javascript:pageClicked(${pi.end + 1})|">&gt;</a>
+		</li>
+		<!-- 마직막 -->
+		<li>
+			<a th:href="|javascript:pageClicked(${pi.pageTotal})|">&gt;&gt;</a>
+		</li>
+	</ol>
+	<input type="hidden" id="p-length" th:value="${pi.pLength}">
+</div>
+<!-- 페이징정보 마지막 -->
+</html>

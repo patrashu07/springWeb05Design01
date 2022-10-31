@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+th:replace="layout/layout-admin::adminLayout(~{this::head} , ~{this::main})" >
+<head>
+	<link rel="stylesheet" href="/css/goods/write.css">
+	<script src="/js/goods/write.js"></script>
+</head>
+   
+<main>
+	<h1>메인영역</h1>
+	<div class="wrap">
+		<section>
+			<h1></h1>
+			<div>
+				<p class="page-tit">상품등록 페이지</p>
+			</div>
+		</section>
+		<section>
+			<h1>상품등록</h1>
+			<div class="wrap">
+				<form action="/goods" method="post" enctype="multipart/form-data">
+					<dl>
+						<dt><label>상품명</label></dt>
+						<dd><input type="text" name="goodsName" ></dd>
+					</dl>
+					<dl>
+						<dt><label>가격</label></dt>
+						<dd><input type="text" name="price"></dd>
+					</dl>
+					<dl>
+						<dt><label>재고</label></dt>
+						<dd><input type="text" name="stock"></dd>
+					</dl>
+					<dl>
+						<dt>상품이미지</dt>
+						<dd>
+							<input type="file" name="mainImg" id="file" onchange="fileChanged(this)">
+							<label for="file">+</label>
+						</dd>
+					</dl>
+					<dl>
+						<dt>추가이미지<i>3장 가능</i></dt>
+						<dd class="flex">
+							<div class="add-file-wrap">
+								<input type="file" name="addImg" id="file-add" onchange="fileChanged(this)">
+								<label for="file-add" >+</label>
+							</div>
+							<button type="button" onclick="btnAddClieked(this)" class="btn-add">추가</button>
+						</dd>
+						<!-- 이 위치에 추가이미지가 태그(dd)가 삽입됩니다. -->
+					</dl>
+					
+					<dl>
+						<dt><label>상세정보</label></dt>
+						<dd><textarea class="summernote" name="content"></textarea></dd>
+					</dl>
+					<div>
+						<button>등록</button>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</main>
+
+</html>

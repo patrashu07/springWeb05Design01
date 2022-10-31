@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  
+	th:replace="~{layout/layout03 :: default(~{::head} , ~{::main})}" >
+<head>
+	<link rel="stylesheet" href="/css/customer/front.css">
+	<script src="/js/customer/front.js"  ></script>
+	<script th:inline="javascript">
+		var pageNo;
+		var division;
+		$(function(){
+			pageNo=(/*[[${param.page}]]*/null)?? 1 ;
+			division=(/*[[${param.division}]]*/null)?? "use" ;
+			var pLength=(/*[[${pData.pLength}]]*/null);
+			var menuList=$(".cus-menu ul>li");
+			for(var taget of menuList){
+				if($(taget).attr("value")==division){
+					$(taget).addClass("target");
+				}
+			}
+			//var pageNo=/*[[${param.page}]]*/"";
+			//if(pageNo==null||pageNo=="") pageNo=1;
+			//console.log("pageNo = "+pageNo);
+			var pageList=$(".page-list>li");
+			pageList.eq((pageNo-1) % pLength ).addClass("select");
+			
+			$(".cus-list ul>li").click(listClicked);
+			$(".cus-menu ul>li").click(menuClicked);
+			
+		});
+		function menuClicked(){
+			//console.log("menu : "+$(this).attr("value"));
+			location.href="/customers/home?division="+$(this).attr("value");
+		}
+		function listClicked(){
+			$(".cus-list ul>li").not(this).find(".answer").slideUp();
+			$(this).find(".answer").slideToggle();
+		}
+		function pageNoClicked(targetNo){
+			//alert(pageNo+":"+division);
+			location.href="/customers/home?division="+division+"&page="+targetNo;
+		}
+	</script>
+</head>
+<!-- /////////////////////////////////////////////////// -->
+<!-- ///////main  ////////////////////////////////////// -->
+<!-- /////////////////////////////////////////////////// -->
+<main>
+	<h1>메인컨텐츠</h1>
+	<div class="wrap view-size">
+		<section>
+			<h1>고객센터</h1>
+			<div>
+				<p class="page-tit">고객센터</p>
+			</div>
+		</section>
+		<section id="container">
+			<h1>faq 리스트</h1>
+			<div class="wrap">
+				<div class="cus-menu">
+					<ul class="flex between">
+						<li value="use"><span>쇼핑몰 이용문의</span></li>
+						<li value="member" ><span>회원/정보</span></li>
+						<li value="order"><span>주문/결제</span></li>
+						<li value="delivery"><span>배송</span></li>
+						<li value="cancel"><span>취소/교환/반품</span></li>
+						<li value="service"><span>서비스/기타</span></li>
+					</ul>
+				</div>
+				<div class="cus-list">
+					<ul>
+						<!-- dto : java의 FaqDTO dto 객체변수의 역할 --> 
+						<!-- dto : li 태그 안에서만 사용가능 ${dto.필드} 필드의 getter메서드 호출 -->
+						<!--/* <dd class="answer">[[${dto.answer}]]</dd> */-->
+						<li th:each="dto : ${list}">
+							<dl>
+								<dt class="question" th:text="${dto.question}"></dt>
+								<dd class="answer">[[${dto.answer}]]</dd>
+							</dl>
+						</li>
+						<li th:if="${#lists.isEmpty(list)}" style="text-align: center;">조회 결과가 존재하지 않습니다.</li>
+					</ul>
+				</div>
+				<div th:if="${!#lists.isEmpty(list)}" class="pagging flex center">
+					<ol class="flex">
+						<li>
+							<!-- <a href="/customers/home?page=1">&lt;&lt;</a> -->
+							<a href="javascript:pageNoClicked(1)">&lt;&lt;</a>
+						</li>
+						<!-- 이전 ne != -->
+						<li th:if="${pData.start ne 1}">
+							<!-- <a th:href="|/customers/home?page=${pData.start-1}|">&lt;</a> -->
+							<a th:href="|javascript:pageNoClicked(${pData.start-1})|">&lt;</a>
+						</li>
+					</ol>
+					<ol class="page-list flex ">
+						<!-- ps~pe 반복-->
+						<li th:each="pageNo :${#numbers.sequence(pData.start , pData.end)}">
+							<!-- <a th:href="|/customers/home?page=${pageNo}|">[[${pageNo}]]</a> -->
+							<a th:href="|javascript:pageNoClicked(${pageNo})|">[[${pageNo}]]</a>
+						</li>
+					</ol>
+					<ol class="flex">
+						<!-- 다음 -->
+						<li th:if="${pData.end lt pData.pageTotal}">
+							<!-- <a th:href="|/customers/home?page=${pData.end + 1}|">&gt;</a> -->
+							<a th:href="|javascript:pageNoClicked(${pData.end + 1})|">&gt;</a>
+						</li>
+						<!-- 마직막 -->
+						<li>
+							<!-- <a th:href="|/customers/home?page=${pData.pageTotal}|">&gt;&gt;</a> -->
+							<a th:href="|javascript:pageNoClicked(${pData.pageTotal})|">&gt;&gt;</a>
+						</li>
+					</ol>
+				</div>
+			</div>
+		</section>
+	</div>
+</main>
+</html>

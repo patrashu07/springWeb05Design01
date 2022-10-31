@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+th:replace="layout/layout-admin::adminLayout(~{this::head} , ~{this::main})" >
+<head>
+   
+</head>
+   
+<main>
+	<h1>메인영역</h1>
+	<section>
+		<h1>페이지제목</h1>
+		<div class="wrap">
+			<p class="page-tit">FAQ 등록하기</p>
+		</div>	
+	</section>
+	<h1>FAQ 등록 폼</h1>
+		<div class="wrap">
+			<form action="/admin/customers/faq" method="post">
+				<dl>
+					<dt>구분</dt>
+					<dd>
+						<select name="division">
+							<option value="none" selected="selected">구분 선택</option>
+							<option value="use">쇼핑몰 이용문의</option>
+							<option value="member">회원/정보</option>
+							<option value="order">주문/결제</option>
+							<option value="delivery">배송</option>
+							<option value="cancel">취소/교환/반품</option>
+							<option value="service">서비스/기타</option>
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>질문</dt>
+					<dd><input type="text" name="question" placeholder="질문 등록"></dd>
+				</dl>
+				<dl>
+					<dt>답변</dt>
+					<dd><textarea name="answer" style=" width:600px; height: 50px" placeholder="답변 등록 하기"></textarea></dd>
+				</dl>
+				<div>
+					<button type="submit" class="btn-style-common" style="width: 600px;">등록</button>
+				</div>
+			</form>
+		</div>	
+	<section>
+	</section>
+</main>
+
+</html>
